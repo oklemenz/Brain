@@ -2,13 +2,13 @@
 
 const http = require('http');
 
-const options = require('./env.json');
+const options = require('../env.json');
 
 global.model = global.model || {};
 global.model.Types = global.model.Types || {};
 global.model.registerType = registerType;
 
-const endpoint = `${options.HOST}:${options.PORT}/${options.PATH}`;
+const endpoint = `${options.host}:${options.port}/${options.path}`;
 
 module.exports = options;
 module.exports.endpoint = endpoint;
@@ -45,9 +45,9 @@ function assignTypes(data) {
 function httpPost(data, cmd) {
     return new Promise((resolve, reject) => {
         const call = {
-            host: options.HOST,
-            port: options.PORT,
-            path: `/${options.PATH}/${cmd}`,
+            host: options.host,
+            port: options.port,
+            path: `/${options.path}/${cmd}`,
             method: 'POST',
             headers: {
                 'Content-Type': 'text/plain',
@@ -75,9 +75,9 @@ function httpPost(data, cmd) {
 function httpGet(cmd) {
     return new Promise((resolve, reject) => {
         const call = {
-            host: options.HOST,
-            port: options.PORT,
-            path: `/${options.PATH}/${cmd}`,
+            host: options.host,
+            port: options.port,
+            path: `/${options.path}/${cmd}`,
             method: 'GET'
         };
         const req = http.request(call, (res) => {

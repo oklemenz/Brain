@@ -30,4 +30,12 @@
 
 ## Data
 
-[Brain Data](./model/model.json)
+[Brain Data](./data.json)
+
+## TODO
+
+- rhyming (startsWith, endsWith)
+- soundex (https://www.npmjs.com/package/soundex-code)
+- fuzzy (http://yomguithereal.github.io/clj-fuzzy/node.html)
+- stemming
+- vocabulary

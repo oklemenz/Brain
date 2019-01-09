@@ -1,87 +1,32 @@
 {
   "_type": "Model",
   "tokens": {
-    "the": {
+    "what": {
       "_type": "Token",
-      "name": "the",
+      "name": "what",
       "count": 1,
       "links": [
         {
           "_type": "Link",
           "name": "next",
-          "from": "the",
-          "to": "weather",
-          "data": {},
-          "count": 0
-        },
-        {
-          "_type": "Link",
-          "name": "first",
-          "from": "the",
-          "to": "the",
-          "data": {},
-          "count": 0
-        },
-        {
-          "_type": "Link",
-          "name": "last",
-          "from": "the",
-          "to": "nice",
-          "data": {},
-          "count": 0
-        }
-      ]
-    },
-    "weather": {
-      "_type": "Token",
-      "name": "weather",
-      "count": 2,
-      "links": [
-        {
-          "_type": "Link",
-          "name": "prev",
-          "from": "weather",
-          "to": "the",
-          "data": {},
-          "count": 0
-        },
-        {
-          "_type": "Link",
-          "name": "next",
-          "from": "weather",
+          "from": "what",
           "to": "is",
           "data": {},
-          "count": 1
+          "count": 0
         },
         {
           "_type": "Link",
           "name": "first",
-          "from": "weather",
-          "to": "the",
+          "from": "what",
+          "to": "what",
           "data": {},
           "count": 0
         },
         {
           "_type": "Link",
           "name": "last",
-          "from": "weather",
-          "to": "nice",
-          "data": {},
-          "count": 0
-        },
-        {
-          "_type": "Link",
-          "name": "first",
-          "from": "weather",
-          "to": "weather",
-          "data": {},
-          "count": 0
-        },
-        {
-          "_type": "Link",
-          "name": "last",
-          "from": "weather",
-          "to": "sunny",
+          "from": "what",
+          "to": "?",
           "data": {},
           "count": 0
         }
@@ -90,37 +35,13 @@
     "is": {
       "_type": "Token",
       "name": "is",
-      "count": 2,
+      "count": 1,
       "links": [
         {
           "_type": "Link",
           "name": "prev",
           "from": "is",
-          "to": "weather",
-          "data": {},
-          "count": 1
-        },
-        {
-          "_type": "Link",
-          "name": "next",
-          "from": "is",
-          "to": "nice",
-          "data": {},
-          "count": 0
-        },
-        {
-          "_type": "Link",
-          "name": "first",
-          "from": "is",
-          "to": "the",
-          "data": {},
-          "count": 0
-        },
-        {
-          "_type": "Link",
-          "name": "last",
-          "from": "is",
-          "to": "nice",
+          "to": "what",
           "data": {},
           "count": 0
         },
@@ -128,7 +49,7 @@
           "_type": "Link",
           "name": "next",
           "from": "is",
-          "to": "sunny",
+          "to": "your",
           "data": {},
           "count": 0
         },
@@ -136,7 +57,7 @@
           "_type": "Link",
           "name": "first",
           "from": "is",
-          "to": "weather",
+          "to": "what",
           "data": {},
           "count": 0
         },
@@ -144,69 +65,116 @@
           "_type": "Link",
           "name": "last",
           "from": "is",
-          "to": "sunny",
+          "to": "?",
           "data": {},
           "count": 0
         }
       ]
     },
-    "nice": {
+    "your": {
       "_type": "Token",
-      "name": "nice",
+      "name": "your",
       "count": 1,
       "links": [
         {
           "_type": "Link",
           "name": "prev",
-          "from": "nice",
+          "from": "your",
           "to": "is",
           "data": {},
           "count": 0
         },
         {
           "_type": "Link",
+          "name": "next",
+          "from": "your",
+          "to": "name",
+          "data": {},
+          "count": 0
+        },
+        {
+          "_type": "Link",
           "name": "first",
-          "from": "nice",
-          "to": "the",
+          "from": "your",
+          "to": "what",
           "data": {},
           "count": 0
         },
         {
           "_type": "Link",
           "name": "last",
-          "from": "nice",
-          "to": "nice",
+          "from": "your",
+          "to": "?",
           "data": {},
           "count": 0
         }
       ]
     },
-    "sunny": {
+    "name": {
       "_type": "Token",
-      "name": "sunny",
+      "name": "name",
       "count": 1,
       "links": [
         {
           "_type": "Link",
           "name": "prev",
-          "from": "sunny",
-          "to": "is",
+          "from": "name",
+          "to": "your",
+          "data": {},
+          "count": 0
+        },
+        {
+          "_type": "Link",
+          "name": "next",
+          "from": "name",
+          "to": "?",
           "data": {},
           "count": 0
         },
         {
           "_type": "Link",
           "name": "first",
-          "from": "sunny",
-          "to": "weather",
+          "from": "name",
+          "to": "what",
           "data": {},
           "count": 0
         },
         {
           "_type": "Link",
           "name": "last",
-          "from": "sunny",
-          "to": "sunny",
+          "from": "name",
+          "to": "?",
+          "data": {},
+          "count": 0
+        }
+      ]
+    },
+    "?": {
+      "_type": "Token",
+      "name": "?",
+      "count": 1,
+      "links": [
+        {
+          "_type": "Link",
+          "name": "prev",
+          "from": "?",
+          "to": "name",
+          "data": {},
+          "count": 0
+        },
+        {
+          "_type": "Link",
+          "name": "first",
+          "from": "?",
+          "to": "what",
+          "data": {},
+          "count": 0
+        },
+        {
+          "_type": "Link",
+          "name": "last",
+          "from": "?",
+          "to": "?",
           "data": {},
           "count": 0
         }

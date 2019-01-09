@@ -3,8 +3,8 @@
 
 const program = require('commander');
 
-const shared = require('./shared');
-const packageJson = require('./package.json');
+const shared = require('../common/util');
+const packageJson = require('../package.json');
 
 program.Command.prototype.usageMinusWildcard = program.usageMinusWildcard = function () {
     program.commands = _.reject(program.commands, {_name: '*'});

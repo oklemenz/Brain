@@ -2,9 +2,8 @@
 
 const Entity = require('./entity');
 const Token = require('./token');
-const Link = require('./link');
 
-const {assignTypes} = require('../shared');
+const {assignTypes} = require('../common/util');
 
 class Model extends Entity {
 
@@ -27,7 +26,7 @@ class Model extends Entity {
     }
 
     store() {
-        return JSON.stringify(this);
+        return JSON.stringify(this, null, 2);
     }
 
     input(data) {
@@ -36,8 +35,12 @@ class Model extends Entity {
         }
         let firstToken;
         let previousToken;
-        const tokenNames = data.replace(/[^\w\s?]/gi, '').split(/\s+/);
+        const tokenNames = data
+            .replace(/[^\w\s?]/gi, '')
+            .replace(/\?/gi, ' ?')
+            .split(/[\s]+/);
         const tokens = tokenNames.map((tokenName) => {
+            tokenName = tokenName.toLowerCase();
             let token = this.tokens[tokenName];
             if (!token) {
                 token = new Token(tokenName);

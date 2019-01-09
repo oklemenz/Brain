@@ -1,17 +1,17 @@
 'use strict';
 
 const express = require('express');
-const bodyparser = require('body-parser');
+const bodyParser = require('body-parser');
 const fs = require('fs');
 
-const {endpoint, PORT, PATH} = require('./shared');
-const {Model} = require('./model');
+const {endpoint, port, path} = require('../common/util');
+const {Model} = require('../model');
 
-const MODEL_DATA = './model/model.json';
+const modelData = './data.json';
 const model = new Model();
 
 const app = express();
-app.use(bodyparser.text());
+app.use(bodyParser.text());
 
 var router = express.Router();
 router.post(`/input`, function (req, res) {
@@ -34,20 +34,20 @@ router.post(`/reset`, function (req, res) {
     store();
     res.send('Reset!');
 });
-app.use(`/${PATH}`, router);
+app.use(`/${path}`, router);
 
 function load() {
-    if (fs.existsSync(MODEL_DATA)) {
-        model.load(fs.readFileSync(MODEL_DATA));
+    if (fs.existsSync(modelData)) {
+        model.load(fs.readFileSync(modelData));
     }
 }
 
 function store() {
-    fs.writeFileSync(MODEL_DATA, model.store());
+    fs.writeFileSync(modelData, model.store());
 }
 
 function start() {
-    app.listen(PORT, function () {
+    app.listen(port, function () {
         console.log(`Brain running on ${endpoint}`);
     });
 }

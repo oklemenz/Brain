@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node index",
     "watch": "nodemon index",
-    "test": "npm test"
+    "test": "npm test",
+    "cloc": "cloc . --vcs=git"
   },
   "author": "Oliver Klemenz",
   "license": "ISC",
@@ -19,6 +20,6 @@
     "nodemon": "^1.18.9"
   },
   "bin": {
-    "brain": "./client.js"
+    "brain": "./controller/client.js"
   }
 }
