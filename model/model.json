@@ -1,1 +1,216 @@
-{"_type":"Model","tokens":{"test":{"_type":"Token","name":"test"},"test2":{"_type":"Token","name":"test2"}}}
+{
+  "_type": "Model",
+  "tokens": {
+    "the": {
+      "_type": "Token",
+      "name": "the",
+      "count": 1,
+      "links": [
+        {
+          "_type": "Link",
+          "name": "next",
+          "from": "the",
+          "to": "weather",
+          "data": {},
+          "count": 0
+        },
+        {
+          "_type": "Link",
+          "name": "first",
+          "from": "the",
+          "to": "the",
+          "data": {},
+          "count": 0
+        },
+        {
+          "_type": "Link",
+          "name": "last",
+          "from": "the",
+          "to": "nice",
+          "data": {},
+          "count": 0
+        }
+      ]
+    },
+    "weather": {
+      "_type": "Token",
+      "name": "weather",
+      "count": 2,
+      "links": [
+        {
+          "_type": "Link",
+          "name": "prev",
+          "from": "weather",
+          "to": "the",
+          "data": {},
+          "count": 0
+        },
+        {
+          "_type": "Link",
+          "name": "next",
+          "from": "weather",
+          "to": "is",
+          "data": {},
+          "count": 1
+        },
+        {
+          "_type": "Link",
+          "name": "first",
+          "from": "weather",
+          "to": "the",
+          "data": {},
+          "count": 0
+        },
+        {
+          "_type": "Link",
+          "name": "last",
+          "from": "weather",
+          "to": "nice",
+          "data": {},
+          "count": 0
+        },
+        {
+          "_type": "Link",
+          "name": "first",
+          "from": "weather",
+          "to": "weather",
+          "data": {},
+          "count": 0
+        },
+        {
+          "_type": "Link",
+          "name": "last",
+          "from": "weather",
+          "to": "sunny",
+          "data": {},
+          "count": 0
+        }
+      ]
+    },
+    "is": {
+      "_type": "Token",
+      "name": "is",
+      "count": 2,
+      "links": [
+        {
+          "_type": "Link",
+          "name": "prev",
+          "from": "is",
+          "to": "weather",
+          "data": {},
+          "count": 1
+        },
+        {
+          "_type": "Link",
+          "name": "next",
+          "from": "is",
+          "to": "nice",
+          "data": {},
+          "count": 0
+        },
+        {
+          "_type": "Link",
+          "name": "first",
+          "from": "is",
+          "to": "the",
+          "data": {},
+          "count": 0
+        },
+        {
+          "_type": "Link",
+          "name": "last",
+          "from": "is",
+          "to": "nice",
+          "data": {},
+          "count": 0
+        },
+        {
+          "_type": "Link",
+          "name": "next",
+          "from": "is",
+          "to": "sunny",
+          "data": {},
+          "count": 0
+        },
+        {
+          "_type": "Link",
+          "name": "first",
+          "from": "is",
+          "to": "weather",
+          "data": {},
+          "count": 0
+        },
+        {
+          "_type": "Link",
+          "name": "last",
+          "from": "is",
+          "to": "sunny",
+          "data": {},
+          "count": 0
+        }
+      ]
+    },
+    "nice": {
+      "_type": "Token",
+      "name": "nice",
+      "count": 1,
+      "links": [
+        {
+          "_type": "Link",
+          "name": "prev",
+          "from": "nice",
+          "to": "is",
+          "data": {},
+          "count": 0
+        },
+        {
+          "_type": "Link",
+          "name": "first",
+          "from": "nice",
+          "to": "the",
+          "data": {},
+          "count": 0
+        },
+        {
+          "_type": "Link",
+          "name": "last",
+          "from": "nice",
+          "to": "nice",
+          "data": {},
+          "count": 0
+        }
+      ]
+    },
+    "sunny": {
+      "_type": "Token",
+      "name": "sunny",
+      "count": 1,
+      "links": [
+        {
+          "_type": "Link",
+          "name": "prev",
+          "from": "sunny",
+          "to": "is",
+          "data": {},
+          "count": 0
+        },
+        {
+          "_type": "Link",
+          "name": "first",
+          "from": "sunny",
+          "to": "weather",
+          "data": {},
+          "count": 0
+        },
+        {
+          "_type": "Link",
+          "name": "last",
+          "from": "sunny",
+          "to": "sunny",
+          "data": {},
+          "count": 0
+        }
+      ]
+    }
+  }
+}

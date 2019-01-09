@@ -34,13 +34,29 @@ class Model extends Entity {
         if (!data) {
             return;
         }
-        const tokenNames = data.split(/\s+/);
-        tokenNames.forEach((tokenName) => {
+        let firstToken;
+        let previousToken;
+        const tokenNames = data.replace(/[^\w\s?]/gi, '').split(/\s+/);
+        const tokens = tokenNames.map((tokenName) => {
             let token = this.tokens[tokenName];
             if (!token) {
                 token = new Token(tokenName);
                 this.tokens[tokenName] = token;
             }
+            token.count++;
+            if (!firstToken) {
+                firstToken = token;
+            }
+            if (previousToken) {
+                token.link('prev', previousToken);
+                previousToken.link('next', token);
+            }
+            previousToken = token;
+            return token;
+        });
+        tokens.forEach((token) => {
+            token.link('first', firstToken);
+            token.link('last', previousToken);
         });
     }
 
