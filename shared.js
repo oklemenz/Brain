@@ -4,9 +4,9 @@ const http = require('http');
 
 const options = require('./env.json');
 
-global.brain = global.brain || {};
-global.brain.Types = global.brain.Types || {};
-global.brain.registerType = registerType;
+global.model = global.model || {};
+global.model.Types = global.model.Types || {};
+global.model.registerType = registerType;
 
 const endpoint = `${options.HOST}:${options.PORT}/${options.PATH}`;
 
@@ -23,11 +23,11 @@ function traverse(data, callback) {
 }
 
 function registerType(name, type) {
-    global.brain.Types[name] = type;
+    global.model.Types[name] = type;
 }
 
 function fetchType(name) {
-    return global.brain && global.brain.Types && global.brain.Types[name];
+    return global.model && global.model.Types && global.model.Types[name];
 }
 
 function assignTypes(data) {

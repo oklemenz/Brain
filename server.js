@@ -5,10 +5,10 @@ const bodyparser = require('body-parser');
 const fs = require('fs');
 
 const {endpoint, PORT, PATH} = require('./shared');
-const {Brain} = require('./model');
+const {Model} = require('./model');
 
-const BRAIN_DATA = './model/brain.json';
-const brain = new Brain();
+const MODEL_DATA = './model/model.json';
+const model = new Model();
 
 const app = express();
 app.use(bodyparser.text());
@@ -16,12 +16,12 @@ app.use(bodyparser.text());
 var router = express.Router();
 router.post(`/input`, function (req, res) {
     const data = req.body;
-    brain.input(data);
-    res.send(brain.output());
+    model.input(data);
+    res.send(model.output());
 });
 
 router.get(`/output`, function (req, res) {
-    res.send(brain.output());
+    res.send(model.output());
 });
 
 router.post(`/store`, function (req, res) {
@@ -30,20 +30,20 @@ router.post(`/store`, function (req, res) {
 });
 
 router.post(`/reset`, function (req, res) {
-    brain.reset();
+    model.reset();
     store();
     res.send('Reset!');
 });
 app.use(`/${PATH}`, router);
 
 function load() {
-    if (fs.existsSync(BRAIN_DATA)) {
-        brain.load(fs.readFileSync(BRAIN_DATA));
+    if (fs.existsSync(MODEL_DATA)) {
+        model.load(fs.readFileSync(MODEL_DATA));
     }
 }
 
 function store() {
-    fs.writeFileSync(BRAIN_DATA, brain.store());
+    fs.writeFileSync(MODEL_DATA, model.store());
 }
 
 function start() {

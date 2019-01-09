@@ -1,8 +1,8 @@
 'use strict';
 
-const Model = require('./model');
+const Entity = require('./entity');
 
-class Token extends Model {
+class Token extends Entity {
 
     constructor(name) {
         super('Token');
