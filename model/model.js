@@ -5,6 +5,10 @@ const Token = require('./token');
 
 const {assignTypes} = require('../common/util');
 
+let beforeInputTokens = [];
+let beforeStartToken;
+let beforeStartTokenTimeout;
+
 class Model extends Entity {
 
     constructor() {
@@ -30,11 +34,8 @@ class Model extends Entity {
     }
 
     input(data) {
-        if (!data) {
-            return;
-        }
-        let firstToken;
-        let previousToken;
+        let startToken;
+        let prevToken;
         const tokenNames = data
             .replace(/[^\w\s?]/gi, '')
             .replace(/\?/gi, ' ?')
@@ -47,23 +48,47 @@ class Model extends Entity {
                 this.tokens[tokenName] = token;
             }
             token.count++;
-            if (!firstToken) {
-                firstToken = token;
+            if (!startToken) {
+                startToken = token;
             }
-            if (previousToken) {
-                token.link('prev', previousToken);
-                previousToken.link('next', token);
+            if (prevToken) {
+                token.link('prev', prevToken);
+                prevToken.link('next', token);
             }
-            previousToken = token;
+            prevToken = token;
             return token;
         });
         tokens.forEach((token) => {
-            token.link('first', firstToken);
-            token.link('last', previousToken);
+            token.link('start', startToken);
+            token.link('end', prevToken);
         });
+
+        if (startToken) {
+            if (beforeStartToken) {
+                startToken.link('before', beforeStartToken);
+                beforeStartToken.link('after', startToken);
+            }
+            beforeInputTokens = tokens;
+            beforeStartToken = startToken;
+            if (beforeStartTokenTimeout) {
+                clearTimeout(beforeStartTokenTimeout);
+            }
+            beforeStartTokenTimeout = setTimeout(() => {
+                beforeInputTokens = [];
+                beforeStartToken = undefined;
+                beforeStartTokenTimeout = undefined;
+            }, 60 * 1000);
+        }
     }
 
     output() {
+        if (beforeInputTokens) {
+            // TODO:
+            //  - For each before input token
+            //  -
+            return 'Thx';
+        }
+        // TODO: Find hot spots in brain, build output from inputs
         return 'Thx';
     }
 }
