@@ -1,184 +1,34 @@
 {
   "_type": "Model",
+  "weight": 2,
+  "time": 1547216995304,
   "tokens": {
-    "what": {
+    "test": {
       "_type": "Token",
-      "name": "what",
-      "count": 1,
+      "weight": 0,
+      "time": 1547216995304,
+      "name": "test",
       "links": [
         {
           "_type": "Link",
-          "name": "next",
-          "from": "what",
-          "to": "is",
-          "data": {},
-          "count": 0
+          "weight": 1,
+          "time": 1547216995304,
+          "name": "start",
+          "from": "test",
+          "to": "test",
+          "data": {}
         },
         {
           "_type": "Link",
-          "name": "first",
-          "from": "what",
-          "to": "what",
-          "data": {},
-          "count": 0
-        },
-        {
-          "_type": "Link",
-          "name": "last",
-          "from": "what",
-          "to": "?",
-          "data": {},
-          "count": 0
-        }
-      ]
-    },
-    "is": {
-      "_type": "Token",
-      "name": "is",
-      "count": 1,
-      "links": [
-        {
-          "_type": "Link",
-          "name": "prev",
-          "from": "is",
-          "to": "what",
-          "data": {},
-          "count": 0
-        },
-        {
-          "_type": "Link",
-          "name": "next",
-          "from": "is",
-          "to": "your",
-          "data": {},
-          "count": 0
-        },
-        {
-          "_type": "Link",
-          "name": "first",
-          "from": "is",
-          "to": "what",
-          "data": {},
-          "count": 0
-        },
-        {
-          "_type": "Link",
-          "name": "last",
-          "from": "is",
-          "to": "?",
-          "data": {},
-          "count": 0
-        }
-      ]
-    },
-    "your": {
-      "_type": "Token",
-      "name": "your",
-      "count": 1,
-      "links": [
-        {
-          "_type": "Link",
-          "name": "prev",
-          "from": "your",
-          "to": "is",
-          "data": {},
-          "count": 0
-        },
-        {
-          "_type": "Link",
-          "name": "next",
-          "from": "your",
-          "to": "name",
-          "data": {},
-          "count": 0
-        },
-        {
-          "_type": "Link",
-          "name": "first",
-          "from": "your",
-          "to": "what",
-          "data": {},
-          "count": 0
-        },
-        {
-          "_type": "Link",
-          "name": "last",
-          "from": "your",
-          "to": "?",
-          "data": {},
-          "count": 0
-        }
-      ]
-    },
-    "name": {
-      "_type": "Token",
-      "name": "name",
-      "count": 1,
-      "links": [
-        {
-          "_type": "Link",
-          "name": "prev",
-          "from": "name",
-          "to": "your",
-          "data": {},
-          "count": 0
-        },
-        {
-          "_type": "Link",
-          "name": "next",
-          "from": "name",
-          "to": "?",
-          "data": {},
-          "count": 0
-        },
-        {
-          "_type": "Link",
-          "name": "first",
-          "from": "name",
-          "to": "what",
-          "data": {},
-          "count": 0
-        },
-        {
-          "_type": "Link",
-          "name": "last",
-          "from": "name",
-          "to": "?",
-          "data": {},
-          "count": 0
-        }
-      ]
-    },
-    "?": {
-      "_type": "Token",
-      "name": "?",
-      "count": 1,
-      "links": [
-        {
-          "_type": "Link",
-          "name": "prev",
-          "from": "?",
-          "to": "name",
-          "data": {},
-          "count": 0
-        },
-        {
-          "_type": "Link",
-          "name": "first",
-          "from": "?",
-          "to": "what",
-          "data": {},
-          "count": 0
-        },
-        {
-          "_type": "Link",
-          "name": "last",
-          "from": "?",
-          "to": "?",
-          "data": {},
-          "count": 0
+          "weight": 0,
+          "time": 1547216995304,
+          "name": "after",
+          "from": "test",
+          "to": "test",
+          "data": {}
         }
       ]
     }
-  }
+  },
+  "sleeping": true
 }

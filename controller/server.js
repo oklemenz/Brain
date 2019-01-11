@@ -14,14 +14,27 @@ const app = express();
 app.use(bodyParser.text());
 
 var router = express.Router();
-router.post(`/input`, function (req, res) {
+router.post(`/in`, function (req, res) {
     const data = req.body;
-    model.input(data);
+    if (model.input(data)) {
+        res.send(model.output());
+    } else {
+        res.send('zzzZZZ');
+    }
+});
+
+router.get(`/out`, function (req, res) {
     res.send(model.output());
 });
 
-router.get(`/output`, function (req, res) {
-    res.send(model.output());
+router.post(`/sleep`, function (req, res) {
+    model.sleep();
+    res.send('zzzZZZ');
+});
+
+router.post(`/wake`, function (req, res) {
+    model.wake();
+    res.send('Yes...');
 });
 
 router.post(`/store`, function (req, res) {
@@ -39,11 +52,13 @@ app.use(`/${path}`, router);
 function load() {
     if (fs.existsSync(modelData)) {
         model.load(fs.readFileSync(modelData));
+        console.log('Loaded!');
     }
 }
 
 function store() {
     fs.writeFileSync(modelData, model.store());
+    console.log('Stored!');
 }
 
 function start() {

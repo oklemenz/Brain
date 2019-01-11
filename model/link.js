@@ -6,7 +6,6 @@ class Link extends Entity {
 
     constructor(name, from, to, data) {
         super('Link');
-        this.init();
         this.name = name;
         this.from = from.name || from;
         this.to = to.name || to;
@@ -14,11 +13,19 @@ class Link extends Entity {
     }
 
     init() {
+        super.init();
         this.name = '';
         this.from = null;
         this.to = null;
         this.data = {};
-        this.count = 0;
+    }
+
+    fromToken() {
+        return this.root().token(this.from);
+    }
+
+    toToken() {
+        return this.root().token(this.to);
     }
 
     equals(link) {
@@ -26,7 +33,7 @@ class Link extends Entity {
     }
 
     toString() {
-        return `${this.name}:${this.from}->${this.to}(${this.count})`;
+        return `${this.name}:${this.from}->${this.to}(${this.weight})`;
     }
 }
 

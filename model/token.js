@@ -7,13 +7,12 @@ class Token extends Entity {
 
     constructor(name) {
         super('Token');
-        this.init();
         this.name = name;
     }
 
     init() {
+        super.init();
         this.name = '';
-        this.count = 0;
         this.links = [];
     }
 
@@ -24,10 +23,11 @@ class Token extends Entity {
         });
         if (!link) {
             link = _link;
+            link[global.model.Symbols.Root] = this.root();
+            link[global.model.Symbols.Parent] = this;
             this.links.push(link);
-        } else {
-            link.count++;
         }
+        link.touch();
         return link;
     }
 

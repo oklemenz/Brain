@@ -32,7 +32,13 @@
 
 [Brain Data](./data.json)
 
-## TODO
+## Concepts
+
+- Forget (randomly reduce weight, or remove links/tokens)
+- Sleep (=> simplify network, still keeping information)
+- Physical Separation (Text, Image, Audio, etc...)
+
+## Further links
 
 - rhyming (startsWith, endsWith)
 - soundex (https://www.npmjs.com/package/soundex-code)

@@ -3,21 +3,26 @@
 const Entity = require('./entity');
 const Token = require('./token');
 
-const {assignTypes} = require('../common/util');
+const options = require('../common/util');
+const {enrichData} = require('../common/util');
 
 let beforeInputTokens = [];
 let beforeStartToken;
 let beforeStartTokenTimeout;
 
+let sleepInterval;
+let forgetInterval;
+
 class Model extends Entity {
 
     constructor() {
         super('Model');
-        this.init();
     }
 
     init() {
+        super.init();
         this.tokens = {};
+        this.sleeping = false;
     }
 
     reset() {
@@ -26,14 +31,28 @@ class Model extends Entity {
 
     load(data) {
         this.init();
-        Object.assign(this, assignTypes(JSON.parse(data)));
+        Object.assign(this, enrichData(this, JSON.parse(data)));
+        if (forgetInterval) {
+            forgetInterval.clearInterval();
+        }
+        forgetInterval = setInterval(() => {
+            this.forget();
+        }, options.forgetInterval);
     }
 
     store() {
         return JSON.stringify(this, null, 2);
     }
 
+    token(tokenName) {
+        return this.tokens[tokenName];
+    }
+
     input(data) {
+        if (this.sleeping) {
+            return false;
+        }
+        this.touch();
         let startToken;
         let prevToken;
         const tokenNames = data
@@ -45,9 +64,12 @@ class Model extends Entity {
             let token = this.tokens[tokenName];
             if (!token) {
                 token = new Token(tokenName);
+                token[global.model.Symbols.Root] = this;
+                token[global.model.Symbols.Parent] = this;
                 this.tokens[tokenName] = token;
             }
-            token.count++;
+            token.touch();
+
             if (!startToken) {
                 startToken = token;
             }
@@ -79,17 +101,58 @@ class Model extends Entity {
                 beforeStartTokenTimeout = undefined;
             }, 60 * 1000);
         }
+        return true;
     }
 
     output() {
         if (beforeInputTokens) {
-            // TODO:
-            //  - For each before input token
-            //  -
-            return 'Thx';
+            // TODO: Produce output based on input before
+            //  - Find tokens with hot spot ratio
+            //  - Find start for hot spot tokens
+            //  - ...
+            return 'Aha';
         }
-        // TODO: Find hot spots in brain, build output from inputs
-        return 'Thx';
+        return 'Aha';
+    }
+
+    sleep() {
+        if (!this.sleeping) {
+            this.sleeping = true;
+            sleepInterval = setInterval(() => {
+                this.dream();
+            }, options.sleepInterval);
+        }
+    }
+
+    dream() {
+        // TODO: Restructure and cleanup
+    }
+
+    wake() {
+        this.sleeping = false;
+        if (sleepInterval) {
+            sleepInterval.clearInterval();
+        }
+    }
+
+    forget() {
+        Object.keys(this.tokens).forEach((tokenName) => {
+            const token = this.token(tokenName);
+            if (Math.random() < options.forgetProbability) {
+                if (token.forget()) {
+                    delete this.tokens[tokenName];
+                    return;
+                }
+            }
+            [...token.links].forEach((link) => {
+                if (Math.random() < options.forgetProbability) {
+                    if (link.forget()) {
+                        const index = token.links.indexOf(link);
+                        token.links.splice(index, 1);
+                    }
+                }
+            });
+        });
     }
 }
 
