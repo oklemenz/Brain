@@ -1,34 +1,130 @@
 {
   "_type": "Model",
-  "weight": 2,
-  "time": 1547216995304,
+  "weight": 3,
+  "time": 1548777591766,
   "tokens": {
-    "test": {
+    "the": {
       "_type": "Token",
       "weight": 0,
-      "time": 1547216995304,
-      "name": "test",
+      "time": 1548777591766,
+      "name": "the",
       "links": [
         {
           "_type": "Link",
           "weight": 1,
-          "time": 1547216995304,
+          "time": 1548777591767,
+          "name": "end",
+          "from": "the",
+          "to": "nice",
+          "data": {}
+        }
+      ]
+    },
+    "weather": {
+      "_type": "Token",
+      "weight": 1,
+      "time": 1548777591766,
+      "name": "weather",
+      "links": [
+        {
+          "_type": "Link",
+          "weight": 1,
+          "time": 1548777591767,
+          "name": "prev",
+          "from": "weather",
+          "to": "the",
+          "data": {}
+        },
+        {
+          "_type": "Link",
+          "weight": 1,
+          "time": 1548777591767,
           "name": "start",
-          "from": "test",
-          "to": "test",
+          "from": "weather",
+          "to": "the",
           "data": {}
         },
         {
           "_type": "Link",
           "weight": 0,
-          "time": 1547216995304,
-          "name": "after",
-          "from": "test",
-          "to": "test",
+          "time": 1548777591767,
+          "name": "end",
+          "from": "weather",
+          "to": "nice",
+          "data": {}
+        }
+      ]
+    },
+    "is": {
+      "_type": "Token",
+      "weight": 0,
+      "time": 1548777591767,
+      "name": "is",
+      "links": [
+        {
+          "_type": "Link",
+          "weight": 1,
+          "time": 1548777591767,
+          "name": "prev",
+          "from": "is",
+          "to": "weather",
+          "data": {}
+        },
+        {
+          "_type": "Link",
+          "weight": 1,
+          "time": 1548777591767,
+          "name": "start",
+          "from": "is",
+          "to": "the",
+          "data": {}
+        },
+        {
+          "_type": "Link",
+          "weight": 1,
+          "time": 1548777591767,
+          "name": "end",
+          "from": "is",
+          "to": "nice",
+          "data": {}
+        }
+      ]
+    },
+    "nice": {
+      "_type": "Token",
+      "weight": 0,
+      "time": 1548777591767,
+      "name": "nice",
+      "links": [
+        {
+          "_type": "Link",
+          "weight": 0,
+          "time": 1548777591767,
+          "name": "prev",
+          "from": "nice",
+          "to": "is",
+          "data": {}
+        },
+        {
+          "_type": "Link",
+          "weight": 1,
+          "time": 1548777591767,
+          "name": "start",
+          "from": "nice",
+          "to": "the",
+          "data": {}
+        },
+        {
+          "_type": "Link",
+          "weight": 0,
+          "time": 1548777591767,
+          "name": "end",
+          "from": "nice",
+          "to": "nice",
           "data": {}
         }
       ]
     }
   },
-  "sleeping": true
+  "sleeping": false
 }

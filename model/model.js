@@ -99,20 +99,24 @@ class Model extends Entity {
                 beforeInputTokens = [];
                 beforeStartToken = undefined;
                 beforeStartTokenTimeout = undefined;
-            }, 60 * 1000);
+            }, options.contextInterval);
         }
         return true;
     }
 
     output() {
-        if (beforeInputTokens) {
+        if (beforeInputTokens && beforeInputTokens.length > 0) {
             // TODO: Produce output based on input before
             //  - Find tokens with hot spot ratio
             //  - Find start for hot spot tokens
-            //  - ...
-            return 'Aha';
+            const output = [];
+            beforeInputTokens.forEach((token) => {
+
+                output.push(token);
+            });
+            return output.join(' ');
         }
-        return 'Aha';
+        return 'Hm';
     }
 
     sleep() {

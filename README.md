@@ -14,11 +14,11 @@
 
 #### Input
 
-```brain input 'the weather is nice'```
+```brain in 'the weather is nice'```
 
 #### Output
 
-```brain output```
+```brain out```
 
 #### Store
 
@@ -27,6 +27,15 @@
 #### Reset
 
 ```brain reset```
+
+#### Sleep
+
+```brain sleep```
+
+#### Wake
+
+```brain wake```
+
 
 ## Data
 
