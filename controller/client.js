@@ -18,7 +18,7 @@ program
 program
     .command('in <data>')
     .alias('i')
-    .description('Input into brain')
+    .description('Brain input')
     .action((data) => {
         util.httpPost('in', data).then((response) => {
             console.log(response);
@@ -28,7 +28,7 @@ program
 program
     .command('out')
     .alias('o')
-    .description('Output from brain')
+    .description('Brain output')
     .action((data) => {
         util.httpGet('out').then((response) => {
             console.log(response);
@@ -38,7 +38,7 @@ program
 program
     .command('sleep')
     .alias('l')
-    .description('Brain sleeps')
+    .description('Brain is sleeping')
     .action(() => {
         util.httpPost('sleep').then((response) => {
             console.log(response);
@@ -55,11 +55,30 @@ program
         });
     });
 
+program
+    .command('train')
+    .alias('t')
+    .description('Brain is trained')
+    .action(() => {
+        util.httpPost('train').then((response) => {
+            console.log(response);
+        });
+    });
+
+program
+    .command('wait')
+    .alias('t')
+    .description('Brain is waiting')
+    .action(() => {
+        util.httpPost('wait').then((response) => {
+            console.log(response);
+        });
+    });
 
 program
     .command('store')
     .alias('s')
-    .description('Store brain')
+    .description('Brain is stored')
     .action(() => {
         util.httpPost('store').then((response) => {
             console.log(response);
@@ -69,7 +88,7 @@ program
 program
     .command('reset')
     .alias('r')
-    .description('Reset brain')
+    .description('Brain is reset')
     .action(() => {
         util.httpPost('reset').then((response) => {
             console.log(response);

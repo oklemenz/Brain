@@ -3,6 +3,8 @@
 const Entity = require('./entity');
 const Link = require('./link');
 
+const options = require('../common/util');
+
 class Token extends Entity {
 
     constructor(name) {
@@ -29,6 +31,48 @@ class Token extends Entity {
         }
         link.touch();
         return link;
+    }
+
+    getLinks(name) {
+        return this.links.filter((link) => {
+            return link.name === name;
+        });
+    }
+
+    getLinkTokens(name) {
+        return this.getLinks(name).map((link) => {
+            return link.toToken();
+        });
+    }
+
+    getMaxWeightLink() {
+        return this.links.reduce((maxLink, link) => {
+            if (!maxLink || link.weight > maxLink.weight) {
+                maxLink = link;
+            }
+            return maxLink;
+        }, undefined);
+    }
+
+    hasLinkForToToken(tokenName) {
+        return this.links.find((link) => {
+            return link.to === tokenName;
+        });
+    }
+
+    linkCount() {
+        return this.links.length;
+    }
+
+    isSignificant() {
+        const linkCount = this.linkCount();
+        if (linkCount < this.root().avgLinks - this.root().stdDevLinks * options.significanceBottom) {
+            return false;
+        }
+        if (linkCount > this.root().avgLinks + this.root().stdDevLinks * options.significanceTop) {
+            return false;
+        }
+        return true;
     }
 
     equals(token) {

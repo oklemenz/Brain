@@ -7,8 +7,8 @@ class Link extends Entity {
     constructor(name, from, to, data) {
         super('Link');
         this.name = name;
-        this.from = from.name || from;
-        this.to = to.name || to;
+        this.from = from.name !== undefined ? from.name : from;
+        this.to = to.name !== undefined ? to.name : to;
         this.data = data || {};
     }
 

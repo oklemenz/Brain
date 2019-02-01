@@ -37,6 +37,23 @@ function enrichData(model, data) {
     return data;
 }
 
+function standardDeviation(data) {
+    const avg = average(data);
+    const squareDiffs = data.map((value) => {
+        var diff = value - avg;
+        return diff * diff;
+    });
+    const avgSquareDiff = average(squareDiffs);
+    return Math.sqrt(avgSquareDiff);
+}
+
+function average(data) {
+    const sum = data.reduce((sum, value) => {
+        return sum + value;
+    }, 0);
+    return sum / data.length;
+}
+
 function httpPost(cmd, data) {
     data = data || '';
     return new Promise((resolve, reject) => {
@@ -93,7 +110,11 @@ function httpGet(cmd) {
     });
 }
 
-module.exports.traverse = traverse;
-module.exports.enrichData = enrichData;
-module.exports.httpPost = httpPost;
-module.exports.httpGet = httpGet;
+Object.assign(module.exports, {
+    traverse,
+    enrichData,
+    standardDeviation,
+    average,
+    httpPost,
+    httpGet
+});
