@@ -27,6 +27,10 @@ class Model extends Entity {
         this.maxLinks = 0;
         this.avgLinks = 0;
         this.stdDevLinks = 0;
+        this.minWeight = 0;
+        this.maxWeight = 0;
+        this.avgWeight = 0;
+        this.stdDevWeight = 0;
     }
 
     reset() {
@@ -50,13 +54,20 @@ class Model extends Entity {
     }
 
     calcMaxLinks() {
-        const data = Object.keys(this.tokens).map((tokenName) => {
+        const linkCount = Object.keys(this.tokens).map((tokenName) => {
             return this.tokens[tokenName].linkCount();
         });
-        this.minLinks = Math.min(...data);
-        this.maxLinks = Math.max(...data);
-        this.avgLinks = options.average(data);
-        this.stdDevLinks = options.standardDeviation(data);
+        this.minLinks = Math.min(...linkCount);
+        this.maxLinks = Math.max(...linkCount);
+        this.avgLinks = options.average(linkCount);
+        this.stdDevLinks = options.standardDeviation(linkCount);
+        const linkWeight = Object.keys(this.tokens).map((tokenName) => {
+            return this.tokens[tokenName].linkMaxWeight();
+        });
+        this.minWeight = Math.min(...linkWeight);
+        this.maxWeight = Math.max(...linkWeight);
+        this.avgWeight = options.average(linkWeight);
+        this.stdDevWeight = options.standardDeviation(linkWeight);
     }
 
     token(tokenName) {
@@ -74,7 +85,9 @@ class Model extends Entity {
             .replace(/[^\w\s?]/gi, '')
             .replace(/\?/gi, ' ?')
             .split(/[\s]+/);
-        const tokens = tokenNames.map((tokenName) => {
+        const tokens = tokenNames.filter((tokenName) => {
+            return tokenName !== '';
+        }).map((tokenName) => {
             tokenName = tokenName.toLowerCase();
             let token = this.token(tokenName);
             // Reserved JS keyword?
@@ -127,9 +140,12 @@ class Model extends Entity {
         if (beforeInputTokens && beforeInputTokens.length > 0) {
 
             // 1. Find significant tokens in before input
-            const significantTokens = beforeInputTokens.filter((token) => {
+            let significantTokens = beforeInputTokens.filter((token) => {
                 return token.isSignificant();
             });
+            if (significantTokens.length === 0) {
+                significantTokens = beforeInputTokens;
+            }
             significantTokens.sort((a, b) => {
                 return a.weight - b.weight;
             });
@@ -141,55 +157,127 @@ class Model extends Entity {
             });
             let significantWeightedSpreadTokenList = [];
             Object.keys(significantWeightedSpreadTokens).forEach((tokenName) => {
-                const key = significantWeightedSpreadTokens[tokenName];
-                significantWeightedSpreadTokenList[key] = significantWeightedSpreadTokenList[key] || [];
-                significantWeightedSpreadTokenList[key].push(tokenName);
+                const weight = significantWeightedSpreadTokens[tokenName];
+                significantWeightedSpreadTokenList[weight] = significantWeightedSpreadTokenList[weight] || [];
+                significantWeightedSpreadTokenList[weight].push(tokenName);
             });
             let significantWeightedSpreadTokenSelect = [];
             Object.keys(significantWeightedSpreadTokenList).reverse().slice(0, options.spreadSelect).forEach((weight) => {
                 significantWeightedSpreadTokenSelect.push(...significantWeightedSpreadTokenList[weight]);
             });
+            significantWeightedSpreadTokenSelect = significantWeightedSpreadTokenSelect.slice(0, options.spreadSelect);
+            significantTokens.forEach((significantToken) => {
+                if (!significantWeightedSpreadTokenSelect.find((startToken) => {
+                    return startToken === significantToken.name;
+                })) {
+                    significantWeightedSpreadTokenSelect.splice(0, 0, significantToken.name);
+                }
+            });
 
-            // 3. Determine start select tokens to significant spread weighted tokens
+            // 3. Determine start select tokens to significant spread weighted token selection
             const significantWeightedSpreadStartTokens = {};
             significantWeightedSpreadTokenSelect.forEach((tokenName) => {
+                const token = this.tokens[tokenName];
                 const startTokens = this.tokens[tokenName].getLinks('start').map((link) => {
                     return link.to;
                 });
-                startTokens.forEach((startToken) => {
-                    significantWeightedSpreadStartTokens[startToken] = significantWeightedSpreadStartTokens[startToken] || [];
-                    significantWeightedSpreadStartTokens[startToken].push(tokenName);
+                startTokens.forEach((startTokenName) => {
+                    significantWeightedSpreadStartTokens[startTokenName] = significantWeightedSpreadStartTokens[startTokenName] || 0;
+                    significantWeightedSpreadStartTokens[startTokenName] += token.weight;
                 });
             });
+            let significantWeightedSpreadStartTokenList = [];
+            Object.keys(significantWeightedSpreadStartTokens).forEach((tokenName) => {
+                const weight = significantWeightedSpreadStartTokens[tokenName];
+                significantWeightedSpreadStartTokenList[weight] = significantWeightedSpreadStartTokenList[weight] || [];
+                significantWeightedSpreadStartTokenList[weight].push(tokenName);
+            });
+            let significantWeightedSpreadStartTokenSelect = [];
+            Object.keys(significantWeightedSpreadStartTokenList).reverse().slice(0, options.outputSelect).forEach((weight) => {
+                significantWeightedSpreadStartTokenSelect.push(...significantWeightedSpreadStartTokenList[weight]);
+            });
+            significantWeightedSpreadStartTokenSelect = significantWeightedSpreadStartTokenSelect.slice(0, options.outputSelect);
 
-            // 4. Find output tokens from start token to end token via optimal link width
-            const outputTokenOptions = []; // [{startToken, tokens, weight}]
-            function determineOutputToken(currentToken, outputTokens = []) {
-                const maxWeightLink = currentToken.getMaxWeightLink();
-                significantTokens.forEach((significantToken) => {
-                    if (currentToken.hasLinkForToToken(significantToken)) {
+            // 4. Find output tokens from start token to end token via optimal link weight
+            const startTime = Date.now();
+            const outputTokenOptions = [];
+            const determineOutputToken = (token, outputTokens = [], weight = 0, end = false) => {
+                if (Date.now() >= startTime + options.outputCalcDuration) {
+                    return;
+                }
+                if (outputTokens.find((outputToken) => {
+                    return outputToken.name === token.name;
+                })) {
+                    return;
+                }
+                outputTokens.push(token);
+                if (end) {
+                    outputTokenOptions.push({
+                        tokens: outputTokens,
+                        weight: weight
+                    });
+                } else {
+                    let weightPlus = 0;
+                    significantTokens.forEach((significantToken) => {
+                        significantToken.getLinks('after').forEach((afterLink) => {
+                            if (afterLink.isSignificant()) {
+                                if (token.name === afterLink.to) {
+                                    weightPlus += options.outputAfterWeight;
+                                }
+                            }
+                        });
+                    });
+                    significantTokens.forEach((significantToken) => {
+                        const toTokenLink = token.getLinkForToToken(significantToken);
+                        if (toTokenLink) {
+                            determineOutputToken(toTokenLink.toToken(),
+                                [...outputTokens], weight + options.outputInputWeight + weightPlus, toTokenLink.name === 'end');
+                        }
+                    });
+                    const endTokens = token.getLinkTokens('end');
+                    token.getEndLinksWeightOrderDesc().forEach((endLink) => {
+                        const toToken = endLink.toToken();
+                        const toEndTokens = toToken.getLinkTokens('end');
+                        if (toEndTokens.find((toEndToken) => {
+                            return endTokens.find((endToken) => {
+                                return endToken.name === toEndToken.name;
+                            });
+                        })) {
+                            determineOutputToken(toToken,
+                                [...outputTokens], weight + endLink.weight + weightPlus, true);
+                        }
+                    });
+                    token.getNextLinksWeightOrderDesc().forEach((nextLink) => {
+                        const toToken = nextLink.toToken();
+                        const toEndTokens = toToken.getLinkTokens('end');
+                        if (toEndTokens.find((toEndToken) => {
+                            return endTokens.find((endToken) => {
+                                return endToken.name === toEndToken.name;
+                            });
+                        })) {
+                            determineOutputToken(toToken,
+                                [...outputTokens], weight + nextLink.weight + weightPlus, false);
+                        }
+                    });
+                }
+            };
 
-                    }
-                })
-            }
-            Object.keys(significantWeightedSpreadStartTokens).forEach((startTokenName) => {
+            /*significantWeightedSpreadStartTokenSelect*/
+            significantTokens.map(t => t.name).forEach((startTokenName) => {
                 determineOutputToken(this.tokens[startTokenName]);
             });
-            const outputTokenOption = outputTokenOptions.reduce((maxOutputTokenOption, outputTokenOption) => {
-                if (!outputTokenOption || outputTokenOption.weight > maxOutputTokenOption.weight) {
-                    maxOutputTokenOption = outputTokenOption;
-                }
-                return maxOutputTokenOption;
-            }, undefined);
+            outputTokenOptions.sort((a, b) => {
+                return b.weight - a.weight;
+            });
 
             // 5. Produce token output from start token to end token
+            const outputTokenOptionsSelect = outputTokenOptions.slice(0, options.optionSelect);
+            const outputTokenOption = outputTokenOptionsSelect[Math.floor(Math.random() * outputTokenOptionsSelect.length)];
             if (outputTokenOption) {
                 return outputTokenOption.tokens.map((token) => {
                     return token.name.trim();
                 }).join(' ');
             }
-
-            // 6. Use after token of start token to add additional output...
         }
         return 'Hm';
     }

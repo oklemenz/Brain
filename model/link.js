@@ -2,6 +2,8 @@
 
 const Entity = require('./entity');
 
+const options = require('../common/util');
+
 class Link extends Entity {
 
     constructor(name, from, to, data) {
@@ -26,6 +28,16 @@ class Link extends Entity {
 
     toToken() {
         return this.root().token(this.to);
+    }
+
+    isSignificant() {
+        if (this.weight < this.root().avgWeight - this.root().stdDevWeight * options.weightSignificanceBottom) {
+            return false;
+        }
+        if (this.weight > this.root().avgWeight + this.root().stdDevWeight * options.weightSignificanceTop) {
+            return false;
+        }
+        return true;
     }
 
     equals(link) {

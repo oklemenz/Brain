@@ -45,23 +45,59 @@ class Token extends Entity {
         });
     }
 
-    getMaxWeightLink() {
-        return this.links.reduce((maxLink, link) => {
-            if (!maxLink || link.weight > maxLink.weight) {
-                maxLink = link;
-            }
-            return maxLink;
-        }, undefined);
-    }
-
-    hasLinkForToToken(tokenName) {
+    getLinkForToToken(tokenName) {
         return this.links.find((link) => {
             return link.to === tokenName;
         });
     }
 
+    getStartLinksWeightOrderDesc() {
+        return this.getLinks('start').sort((a, b) => {
+            return b.weight - a.weight;
+        });
+    }
+
+    getEndLinksWeightOrderDesc() {
+        return this.getLinks('end').sort((a, b) => {
+            return b.weight - a.weight;
+        });
+    }
+
+    getPrevLinksWeightOrderDesc() {
+        return this.getLinks('prev').sort((a, b) => {
+            return b.weight - a.weight;
+        });
+    }
+
+    getNextLinksWeightOrderDesc() {
+        return this.getLinks('next').sort((a, b) => {
+            return b.weight - a.weight;
+        });
+    }
+
+    getBeforeLinksWeightOrderDesc() {
+        return this.getLinks('before').sort((a, b) => {
+            return b.weight - a.weight;
+        });
+    }
+
+    getAfterLinksWeightOrderDesc() {
+        return this.getLinks('after').sort((a, b) => {
+            return b.weight - a.weight;
+        });
+    }
+
     linkCount() {
         return this.links.length;
+    }
+
+    linkMaxWeight() {
+        return this.links.reduce((max, link) => {
+            if (!max || link.weight > max) {
+                max = link.weight;
+            }
+            return max;
+        }, 0);
     }
 
     isSignificant() {
