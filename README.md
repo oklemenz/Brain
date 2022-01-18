@@ -1,5 +1,7 @@
 # Brain
 
+Brain is Javascript demo of a human brain simulation
+
 ## Start
 
 ```npm start```
